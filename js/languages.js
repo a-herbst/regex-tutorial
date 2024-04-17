@@ -1,6 +1,31 @@
 
 var languagesLoaded = false;
 
+function updateLanguageCSharp(regularExpression, text) {
+  var regex = JSON.stringify(regularExpression);
+  var text = JSON.stringify(text);
+  return  'using System.Text.RegularExpressions;\n' +
+          'using System;\n' +
+          '\n' +
+          'public class Program\n' +
+          '{\n' +
+          '  public static void Main()\n' +
+          '  {\n' +
+          '    var regexMatch =\n' +
+          '    Regex.Match(\n' +
+          '      ' + text + ',\n' +
+          '      ' + regex + ',\n' +
+          '      RegexOptions.Compiled);\n' +
+          '\n' +
+          '    while (regexMatch.Success)\n' +
+          '    {\n' +
+          '      Console.WriteLine(regexMatch.Value);\n' +
+          '      regexMatch = regexMatch.NextMatch();\n' +
+          '    }\n' +
+          '  }\n'+
+          '}';
+}
+
 function updateLanguagePython(regularExpression, text) {
   var regex = JSON.stringify(regularExpression);
   var text = JSON.stringify(text);
@@ -34,6 +59,11 @@ function updateLanguageGo(regularExpression, text) {
 }
 
 updateLanguages = [
+  {
+    "name": "C#",
+    "update": updateLanguageCSharp,
+    "online": "https://dotnetfiddle.net/",
+  },
   {
     "name": "Python",
     "update": updateLanguagePython,
