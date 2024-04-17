@@ -23,7 +23,6 @@ function nomatchTextElement(string) {
 }
 
 function matchExample(match, isIncomplete, text, example) {
-  var text = example.innerText;
   var start = match.index;
   var stop = match.index + match[0].length;
   var textBefore = text.slice(0, start);
@@ -125,6 +124,7 @@ function watchExpression(playfield, examples, regex, message) {
       } else {
         unmatchExample(example);
       }
+
       allCorrect = !match == shouldNotMatch && allCorrect;
     }
     if (allCorrect) {
