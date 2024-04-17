@@ -1,0 +1,29 @@
+---
+title: Suchen und Ersetzen - Backreferences
+---
+<p>
+  Gruppen k&ouml;nnen nicht nur dazu dienen, einen Teil im Suchmuster optional zu machen oder Wiederholungen davon zu finden.
+  Mit einer <a href="https://www.regular-expressions.info/backref.html" target="_blank">Backreference</a> kann man auf den durch eine Gruppe gematchten Teil
+  verweisen. Zum Beipsiel verweist <span class="regex">\1</span> auf den Match der ersten Gruppe bzw. mit <span class="regex">\2</span> auf den der zweite Gruppe im Suchmuster.
+</p>
+<p>
+  Versuche alle Zuweisungen zu matchen, in denen eine Variable ihren eigenen Wert zugewiesen bekommt.
+</p>
+<div class="playfield verbose">
+  <input type="text" value="" class="regex" reference="^(\w+)\s*=\s*\1;$">
+  <div class="message"></div>
+  <ul class="examples">
+    <li>contact = "Microsoft";</li>
+    <li>valueBefore = value;</li>
+    <li>tautologie=tautologie;</li>
+    <li>notAnIterator = notAnIterator;</li>
+    <li>itIs=whatItIs;</li>
+  </ul>
+</div>
+<p class="hint">
+Hast du das Semikolon mit gematcht?
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

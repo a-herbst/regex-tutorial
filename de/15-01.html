@@ -1,0 +1,40 @@
+---
+title: CSharp - Integer Literale
+---
+<p>
+  Regul&auml;re Ausdr&uuml;cke k&ouml;nnen beim Refactoring unterstützen. Dazu kann es notwendig sein, Zahlen im Code zu finden.
+  Versuche alle <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/integral-numeric-types#integer-literals" target="_blank">Integer-Literale</a>
+  zu matchen.
+</p>
+<div class="playfield verbose">
+  <input type="text" value="" class="regex" reference="^(0|-?[0-9]*|-?0x[0-9a-fA-F]+)$">
+  <div class="message"></div>
+  <ul class="examples">
+    <li>0</li>
+    <li>"Hallo Welt"</li>
+    <li>1</li>
+    <li>-23</li>
+    <li>myVariable</li>
+    <li>"0xylophon"</li>
+    <li>42</li>
+    <li>"1Apfel"</li>
+    <li>0x17</li>
+    <li>-0x2a</li>
+    <li>0x00</li>
+    <li>0x</li>
+  </ul>
+</div>
+<p class="hint">
+  Verwende Fallunterscheidungen, um 0, dezimal und hexadezimal voneinander zu unterscheiden.
+</p>
+<p class="hint">
+  In den eckigen Klammern lassen sich auch mehrere Mengen angeben, die als vereinigte Menge gematchet werden. 
+  Z.B. matcht <span class="regex">[0-9a-f]</span> eine hexadezimale "Ziffer".
+</p>
+<p class="hint">
+  Verwende Zeilenanfang und Zeilenende, um zu erzwingen, dass die Fallunterscheidungen das komplette Literal erfassen.
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

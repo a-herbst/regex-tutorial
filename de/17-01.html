@@ -1,0 +1,41 @@
+---
+title: Refactoring - neuer Parameter
+---
+<p>
+  In der Methode
+
+  {% highlight csharp %}
+  public virtual double Round(double value) { ... }
+  {% endhighlight %}
+
+  wurde nachträglich ein neuer Parameter hinzugefügt:
+
+  {% highlight csharp %}
+  public virtual double Round(uint numberOfDecimalPlaces, double value) { ... }
+  {% endhighlight %}
+
+  Formuliere Patterns, so dass in allen Aufrufen der Methode eine <i>2</i> als erstes Argument erg&auml;nzt wird.
+</p>
+<div class="playfield verbose">
+  <p>
+    <div>
+      Suchen nach: <input type="text" value="" class="regex" reference="Round\(([^)]+)\)">
+      Ersetzen durch: <input type="text" value="" class="replaceWith" reference="Round(2, $1)">
+    </div>
+    <div class="message"></div>
+    <ul class="examples">
+      <li>OtherMethod(42) + Round(23.0)</li>
+      <li>Console.WriteLine(Round(1.2))</li>
+      <li>Round(.1)</li>
+    </ul>
+  </p>
+  <p>
+    Ersetzungsergebnis:
+    <ul class="exampleResults">
+    </ul>
+  </p>
+</div>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

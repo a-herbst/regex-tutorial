@@ -1,0 +1,33 @@
+---
+title: CSharp - PascalCase
+---
+<p>
+  Beim Entwickeln einer CSharp-Klasse wurden nicht alle Methodennamen in PascalCase
+  geschrieben. Versuche die betroffenen Methoden zu matchen, die nicht die CSharp-
+  Namenskonvention erfüllen; also die mit einem Kleinbuchstaben beginnen.
+</p>
+<div class="playfield verbose">
+  <input type="text" value="" class="regex" reference="(^|[\s.])[a-z]\w*\(">
+  <div class="message"></div>
+  <ul class="examples">
+    <li>localVariable = 4;</li>
+    <li>public int add(int a, int b) {</li>
+    <li>add(4, 3);</li>
+    <li>public int PascalCase(int a) {</li>
+    <li>this.PascalCase(42);</li>
+    <li>void calculate() {</li>
+    <li>calculate();</li>
+    <li>public void a()</li>
+    <li>a();</li>
+  </ul>
+</div>
+<p class="hint">
+Mit einer Pr&uuml;fung auf "Zeilenanfang" oder <span class="regex">[\s.]</span> l&auml;sst sich der Beginn eines Methodenaufrufs finden.
+</p>
+<p class="hint">
+Durch Verwendung von Backslash lassen sich im regul&auml;ren Ausdruck Zeichen escapen. Wenn du z.B. eine <i>(</i> matchen willst, benutze <span class="regex">\(</span> .
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

@@ -1,0 +1,47 @@
+---
+title: Lookaheads
+---
+<p>
+  Durch <a href="https://www.regular-expressions.info/lookaround.html" target="_blank">Lookaheads</a> ist es möglich, zu prüfen, wie es hinter einem Match weiter geht (oder nicht weiter geht).
+</p>
+<p>
+  Mit einem <b>positivien Lookahead</b> l&auml;sst sich der Wortanfang von Worten matchen, die mit einem bestimmten Suffix weitergehen. 
+</p>
+<p>
+  Z.B. <span class="regex">Ersatz(?=teil)</span> w&uuml;rde
+  <ul>
+    <li>im Wort <b>Ersatz</b>teil nur den fetten Teil matchen</li>
+    <li>das Wort Ersatzschraube gar nicht matchen, da es nicht auf <i>teil</i> endet</li>
+  </ul>
+  Mit einem <b>negativen Lookahead</b> l&auml;sst lassen sich Worte matchen, hinter denen es NICHT so weiter geht, wie durch das Muster im Lookahead vorgegeben.
+</p>
+<p>
+  Z.B. w&uuml;rde <span class="regex">Ersatz(?!teil)</span>
+  <ul>
+    <li>das Wort Ersatzteil gar nicht matchen, da es auf <i>teil</i> endet</li>
+    <li>das Wort <b>Ersatzschraube</b> komplett matchen, da es danach nicht mit <i>teil</i> weiter geht</li>
+  </ul>
+</p>
+<p>
+  Versuche nun Identifier (Methodenname oder Variable) zu matchen, die NICHT auf Id enden.
+</p>
+<div class="playfield verbose">
+  <input type="text" value="" class="regex" reference="^(?!\w*Id)\w*(\(\))?$">
+  <div class="message"></div>
+  <ul class="examples">
+    <li>Id</li>
+    <li>entityId</li>
+    <li>creationDate</li>
+    <li>GetId()</li>
+    <li>Save()</li>
+    <li>GetEntityId()</li>
+  </ul>
+</div>
+<p class="hint">
+Versuche zuerst mit einem negativen Lookahead zu pr&uuml;fen, ob auf den Zeilenanfang KEIN Wort folgt, das auf "Id" endet
+und hänge dann das Muster zum Erkennen von Variablen / Methoden hinter dem Lookahead an.
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

@@ -1,0 +1,44 @@
+---
+title: Refactoring - Parameter vertauschen
+---
+<p>
+  In der Methode
+
+  {% highlight csharp %}
+  public virtual double Round(uint numberOfDecimalPlaces, double value)
+  {% endhighlight %}
+
+  wurden die beiden Parameter vertauscht:
+
+  {% highlight csharp %}
+  public virtual double Round(double value, uint numberOfDecimalPlaces)
+  {% endhighlight %}
+
+  Formuliere Patterns, welche in allen Aufrufen dieser Methode jeweils das 1. und 2. Argument vertauschen.
+</p>
+<div class="playfield verbose">
+  <p>
+    <div>
+      Suchen nach: <input type="text" value="" class="regex" reference="Round\(([^,]+), ([^,]+)\)">
+      Ersetzen durch: <input type="text" value="" class="replaceWith" reference="Round($2, $1)">
+    </div>
+    <div class="message"></div>
+    <ul class="examples">
+      <li>Round(2, -1.2)</li>
+      <li>Round(2, 2.5)</li>
+      <li>Round(2, value)</li>
+      <li>Round(precision, 1.2)</li>
+      <li>Round(2, -1.2) + Round(precision, value)</li>
+      <li>Round(2, -1.2) + OtherMethod(dontSwap, theseArguments)</li>
+    </ul>
+  </p>
+  <p>
+    Ersetzungsergebnis:
+    <ul class="exampleResults">
+    </ul>
+  </p>
+</div>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

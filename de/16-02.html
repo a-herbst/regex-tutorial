@@ -1,0 +1,38 @@
+---
+title: Suchen und Ersetzen - Vertauschen von Worten
+---
+<p>
+  Beim Suchen &amp; Ersetzen lassen sich Backreferences auch im Erstzen-String verwenden.
+</p>
+<p>
+  <b>Achtung: </b> Die Syntax f&uuml;r Backreferences im Ersetzen-durch-String weicht in der Regel von der Syntax f&uuml; Backreferences innerhalb des Suchstrings ab. So muss dort <span class="regex">$1</span> oder <span class="regex">$2</span> verwendet werden, wenn man auf den gematchten Teilstring einer Gruppe verweisen m&ouml;chte.
+</p>
+<p>
+  Versuche die Grammatik der folgenden S&auml;tze zu korrigieren, indem Du die letzten beiden Worte vertauschst:
+</p>
+<div class="playfield verbose">
+  <p>
+    <div>
+      Suchen nach: <input type="text" value="" class="regex" reference="^(.*) (\w+) (\w+)$">
+      Ersetzen durch: <input type="text" value="" class="replaceWith" reference="$1 $3 $2">
+    </div>  
+    <div class="message"></div>
+    <ul class="examples">
+      <li>Bernd gegessen hat</li>
+      <li>Yoda kann sprechen gut</li>
+      <li>Der UnitTest rot ist</li>
+    </ul>
+  </p>
+  <p>
+    Ersetzungsergebnis:
+    <ul class="exampleResults">
+    </ul>
+  </p>
+</div>
+<p class="hint">
+Mit <span class="regex">(.*)</span> l&auml;sst sich ein beliebiger Satzanfang matchen.
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>

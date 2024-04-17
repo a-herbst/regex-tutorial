@@ -1,0 +1,54 @@
+---
+title: Refactoring - neuer Parameter mittendrin
+---
+<p>
+  In der Methode
+
+  {% highlight csharp %}
+  public virtual IPriceItem CreatePriceItem(
+    double unitPrice, 
+    int quantity, 
+    double salesPrice) { ... }
+  {% endhighlight %}
+
+  wurde nachträglich ein neuer Parameter hinzugefügt:
+
+  {% highlight csharp %}
+  public virtual IPriceItem CreatePriceItem(
+    double unitPrice, 
+    int quantity, 
+    double discountAmount, 
+    double salesPrice) { ... }
+  {% endhighlight %}
+
+  Formuliere Patterns, welche in allen Aufrufen dieser Methode <i>0.0</i> als 3. Argument einf&uuml;gen.
+</p>
+<div class="playfield verbose">
+  <p>
+    <div>
+      Suchen nach: <input type="text" value="" class="regex" reference="CreatePriceItem\(([^,]+), ([^,]+), ([^,]+)\)">
+      Ersetzen durch: <input type="text" value="" class="replaceWith" reference="CreatePriceItem($1, $2, 0.0, $3)">
+    </div>
+    <div class="message"></div>
+    <ul class="examples">
+      <li>OtherMethod(42)</li>
+      <li>CreatePriceItem(.1, 1, .1)</li>
+      <li>CreatePriceItem(-.1, 1, -.1)</li>
+      <li>CreatePriceItem(9.25, 2, 18.50)</li>
+      <li>CreatePriceItem(-100.0, 1, -100.00)</li>
+      <li>CreatePriceItem(unitPrice, quantity, discountAmount)</li>
+    </ul>
+  </p>
+  <p>
+    Ersetzungsergebnis:
+    <ul class="exampleResults">
+    </ul>
+  </p>
+</div>
+<p class="hint">
+Ein einzelnes Argument eines Methodenaufrufs l&auml;sst sich mit <span class="regex">[^,]+</span> matchen.
+</p>
+<p>
+  Wenn du es richtig gemacht hast, erscheint ein Haken neben deinem
+  regulären Ausdruck.
+</p>
