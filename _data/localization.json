@@ -113,6 +113,12 @@
       "de": "ok, nicht gefunden",
       "sv": "ok, ingen matchning",
       "pt-br": "ok, não corresponde"
+    },
+    "noReplaceWithMatch": {
+      "en": "replacement does not match",
+      "de": "die Ersetzung stimmt nicht",
+      "sv": "(TODO: translate)replacement does not match",
+      "pt-br": "(TODO: translate)replacement does not match"
     }
   },
   "error": {

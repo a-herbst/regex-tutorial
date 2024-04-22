@@ -59,6 +59,10 @@
       content: "{{ site.data.localization.match.noMatch[page.lang] }}";
     }
 
+    .playfield.verbose .noreplacewithmatch:after {
+      content: "{{ site.data.localization.match.noReplaceWithMatch[page.lang] }}";
+    }
+
     .quiz .expression:before {
       content: "{{ site.data.localization.quiz.before[page.lang] }}";
     }

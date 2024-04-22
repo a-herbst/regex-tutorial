@@ -9,8 +9,14 @@
 .playfield  .regex {
   width: 100%;
 }
+.playfield  .replaceWith {
+  width: 100%;
+}
 
 .playfield.success .regex {
+  width: calc(100% - 2em);
+}
+.playfield.success .replaceWith {
   width: calc(100% - 2em);
 }
 .playfield.success:before {
@@ -55,6 +61,9 @@
   background-color: {{ site.data.colors.fails }};
 }
 .playfield  .incompletematch.fail {
+  background-color: {{ site.data.colors.fails }};
+}
+.playfield  .noreplacewithmatch {
   background-color: {{ site.data.colors.fails }};
 }
 .playfield  .nomatch.ok {

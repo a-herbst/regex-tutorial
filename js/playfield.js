@@ -22,9 +22,9 @@ function nomatchTextElement(string) {
   return span;
 }
 
-function matchExample(match, isIncomplete, text, example) {
-  var start = match.index;
-  var stop = match.index + match[0].length;
+function matchExample(matchResult, text, example, exampleResult) {
+  var start = matchResult.match.index;
+  var stop = matchResult.match.index + matchResult.match[0].length;
   var textBefore = text.slice(0, start);
   var textMatch = text.slice(start, stop);
   var textAfter = text.slice(stop, text.length);
@@ -34,12 +34,22 @@ function matchExample(match, isIncomplete, text, example) {
   example.appendChild(matchTextElement(textMatch));
   example.appendChild(nomatchTextElement(textAfter));
 
-  if (!isIncomplete) {
+  if (!matchResult.isIncomplete) {
     example.classList.remove("incompletematch");
     example.classList.add("match");
   } else {
     example.classList.remove("match");
     example.classList.add("incompletematch");
+  }
+
+  if (exampleResult) {
+    exampleResult.innerText = matchResult.textReplaced
+
+    if (matchResult.replaceWithMatches == null || matchResult.replaceWithMatches) {
+      exampleResult.classList.remove("noreplacewithmatch");
+    } else if (matchResult.replaceWithMatches === false) {
+      exampleResult.classList.add("noreplacewithmatch");
+    }
   }
 
   example.classList.remove("nomatch");
@@ -54,10 +64,10 @@ function unmatchExample(example) {
   example.classList.add("nomatch");
 }
 
-function watchExpression(playfield, examples, regex, message) {
-  function getExpression() {
+function watchExpression(playfield, examples, exampleResults, regex, replaceWith, message) {
+  function getExpression(flags) {
     try {
-      return RegExp(regex.value);
+      return RegExp(regex.value, flags);
     } catch (err){
       message.innerHTML = translateErrorMessage(err.message);
       regex.classList.add("error");
@@ -65,33 +75,60 @@ function watchExpression(playfield, examples, regex, message) {
       return null;
     }
   }
-  function getReferenceInfo() {
+  function getReferenceRegex(flags) {
     var reference = regex.getAttribute("reference");
+    if (!reference)
+      return null;
+
     try {
-      return {
-        "shouldMatchWholeLine": reference.startsWith('^') && reference.endsWith('$'),
-        "regex": RegExp(reference)
-      };
+      return RegExp(reference, flags);
     } catch (err) {
       message.innerHTML = translateReferenceWrongErrorMessage(err.message);
       return null;
     }
   }
+  function getReferenceInfo() {
+    var reference = regex.getAttribute("reference");
+    return {
+      "shouldMatchWholeLine": reference.startsWith('^') && reference.endsWith('$'),
+      "regex": getReferenceRegex("")
+    };
+  }
+  function getReferenceReplaceWith() {
+    return replaceWith?.getAttribute("reference");
+  }
   function check() {
     updateExperiment();
     playfield.classList.remove("success");
     var referenceInfo = getReferenceInfo();
-    var exp = getExpression();
-    if (!exp || !referenceInfo) {
+    var referenceReplaceWith = getReferenceReplaceWith();
+
+    var exp = getExpression("");
+    if (!exp || !referenceInfo ) {
       return;
     }
     message.innerHTML = "";
     regex.classList.remove("error");
     message.classList.remove("error");
     var example_list = examples.getElementsByTagName("li");
+    var exampleResult_list = exampleResults?.getElementsByTagName("li");
     var allCorrect = true;
     for (var i = 0; i < example_list.length; i += 1) {
       var example = example_list[i];
+
+      // auto create exampleResult list item when exampleResults list is present
+      var exampleResult = null;
+      if (exampleResults) {
+        if (i >= exampleResult_list.length) {
+          exampleResult = document.createElement("li");
+          exampleResults.appendChild(exampleResult);
+        } else {
+          exampleResult = exampleResult_list[i];
+        }
+
+        exampleResult.innerText = example.innerText;
+      }
+
       var text = example.innerText;
       // determine if it should match
       var shouldNotMatch;
@@ -110,22 +147,46 @@ function watchExpression(playfield, examples, regex, message) {
       }
       // check the match
       var match = exp.exec(text);
+      var isIncomplete = false;
       if (match) {
         var matches = text.match(exp);
-        var isIncomplete =
+        isIncomplete =
           referenceInfo.shouldMatchWholeLine
           && matches?.length > 0 && matches[0] != text;
+      }
 
-        matchExample(match, isIncomplete, text, example);
+      var replaceWithMatches = null;
+      var exampleTextReplaced = "";
+      if (replaceWith) {
+        var globalExp = getExpression("g");
+        var globalReferenceRegExp = getReferenceRegex("g");
+
+        var exampleTextReplaced = example.innerText.replaceAll(globalExp, replaceWith.value);
+        var exampleTextReplacedReference = example.innerText.replaceAll(globalReferenceRegExp, referenceReplaceWith);
+
+         replaceWithMatches = (exampleTextReplaced == exampleTextReplacedReference);
+      }
+
+      var matchResult = {
+        "match": match,
+        "isIncomplete": isIncomplete,
+        "replaceWithMatches": replaceWithMatches,
+        "textReplaced": exampleTextReplaced
+      }
+      if (matchResult.match) {
+        matchExample(matchResult, text, example, exampleResult);
 
         // enforce overall result to fail if any expected match is incomplete
         if (referenceInfo.shouldMatchWholeLine && !shouldNotMatch)
-          match = match && !isIncomplete;
+          match = match && !matchResult.isIncomplete;
       } else {
         unmatchExample(example);
       }
 
-      allCorrect = !match == shouldNotMatch && allCorrect;
+      allCorrect =
+        allCorrect
+        && !match == shouldNotMatch
+        && (!replaceWith || replaceWithMatches);
     }
     if (allCorrect) {
       playfield.classList.add("success");
@@ -135,6 +196,8 @@ function watchExpression(playfield, examples, regex, message) {
     }
   }
   regex.onkeyup = check;
+  if (replaceWith)
+    replaceWith.onkeyup = check;
 
   var experiments = playfield.getElementsByClassName("experiment");
   if (experiments.length == 1) {
@@ -154,10 +217,15 @@ function watchExpression(playfield, examples, regex, message) {
       if (!exp) {
         return;
       }
-      var match = exp.exec(text);
-      if (match) {
+      var matchResult = {
+        "match": exp.exec(text),
+        "isIncomplete": false,
+        "replaceWithMatches": null,
+        "textReplaced": null
+      }
+      if (matchResult.match) {
         experiment.classList.add("match");
-        matchExample(match, false, text, content);
+        matchExample(matchResult, text, content, null);
       } else {
         experiment.classList.add("nomatch");
         unmatchExample(content);
@@ -189,10 +257,20 @@ function loadPlayfields(){
   for (var i = 0; i < playfields.length; i += 1) {
     var playfield = playfields[i];
     var regex = getPlayfieldElement(playfield, i, "regex");
+
+    var replaceWith = null;
+    if (playfield.getElementsByClassName("replaceWith").length)
+      replaceWith = getPlayfieldElement(playfield, i, "replaceWith");
+
     var examples = getPlayfieldElement(playfield, i, "examples");
+
+    var exampleResults = null;
+    if (playfield.getElementsByClassName("exampleResults").length)
+      exampleResults = getPlayfieldElement(playfield, i, "exampleResults");
+
     var message = getPlayfieldElement(playfield, i, "message");
 
-    watchExpression(playfield, examples, regex, message);
+    watchExpression(playfield, examples, exampleResults, regex, replaceWith, message);
     if (i == 0) {
       regex.focus();
     }
