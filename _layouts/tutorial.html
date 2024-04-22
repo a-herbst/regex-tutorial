@@ -135,7 +135,7 @@
     <footer>
       <div class="languageFooterMenu" >
         <select id="languageMenu" onchange="changeLanguage()">
-          {%- assign languagesArray = 'English,Deutsch,Svenska' | split: ',' %}
+          {%- assign languagesArray = 'Deutsch' | split: ',' %}
           {%- for language in languagesArray %}
           {%- assign lang = language | slice: 0, 2 | downcase %}
           {%- if lang  == page.lang %}
