@@ -33,9 +33,17 @@ There are two ways to run this website, either by downloading Jekyll on your com
 
 ### Install Jekyll
 
-1. Launch a terminal and run `gem install jekyll` to install Jekyll
-2. Then run `jekyll serve --trace` in your forked repository to run Jekyll from there.
-3. Type in `localhost:4000` to visit the website.
+0. Have [ruby](https://www.ruby-lang.org) installed
+1. Launch a ruby-terminal and run `gem install jekyll bundle` to install Jekyll
+2. Be sure that environment variables are set according to your networking proxy
+   i.e. in cmd.exe do
+   `set http_proxy=http://proxyhostname:port`
+   `set https_proxy=http://proxyhostname:port`
+3. Then run `bundle add webrick`
+4. Then run `bundle install`
+5. Then run `bundle exec jekyll serve --trace` in your forked repository to run Jekyll from there.
+   If that fails try to delete `Gemfile.lock` and repeat steps from step 4 and following
+6. Type in `localhost:4000` to visit the website.
 You can read more about installing Jekyll [here](https://jekyllrb.com/docs/installation/).
 
 ### Github Pages
